@@ -1,53 +1,43 @@
-import { Form, Icons, Input, Button, Checkbox } from "antd";
-import { AnyARecord } from "dns";
+import { useState } from "react";
+import "./Login.module.css";
 
-const Login = (props) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
-    });
+const Login = () => {
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
+
+  const emailHandler = (e: any) => {
+    setEmail(e.target.value);
+    console.log(email);
+  };
+  const passwordHandler = (e: any) => {
+    setPassword(e.target.value);
   };
 
+  const submitHandler = (event: any) => {
+    event.preventDefault();
+
+    console.log(event.target.values);
+
+    const loginData = { email: email, password: password };
+
+    console.log(loginData);
+  };
   return (
-    <Form onSubmit={handleSubmit} className="login-form">
-      <Form.Item>
-        {getFieldDecorator("username", {
-          rules: [{ required: true, message: "Please input your username!" }],
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="Username"
-          />
-        )}
-      </Form.Item>
-      <Form.Item>
-        {getFieldDecorator("password", {
-          rules: [{ required: true, message: "Please input your Password!" }],
-        })(
-          <Input
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="password"
-            placeholder="Password"
-          />
-        )}
-      </Form.Item>
-      <Form.Item>
-        {getFieldDecorator("remember", {
-          valuePropName: "checked",
-          initialValue: true,
-        })(<Checkbox>Remember me</Checkbox>)}
-        <a className="login-form-forgot" href="">
-          Forgot password
-        </a>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
-        </Button>
-        Or <a href="">register now!</a>
-      </Form.Item>
-    </Form>
+    <div>
+      <form onSubmit={submitHandler}>
+        <label htmlFor="email">Email</label>
+        <input key="email" type="text" value={email} onChange={emailHandler} />
+        <label htmlFor="password">Password</label>
+        <input
+          key="password"
+          type="password"
+          value={password}
+          onChange={passwordHandler}
+        />
+        <button>ok</button>
+      </form>
+    </div>
   );
 };
+
 export default Login;
